@@ -11,15 +11,17 @@ import { ReactComponent as Number5 } from "./images/number5.svg";
 import { ReactComponent as Number6 } from "./images/number6.svg";
 import { ReactComponent as Number7 } from "./images/number7.svg";
 import { ReactComponent as Number8 } from "./images/number8.svg";
+import { ReactComponent as UnopenedSquare } from "./images/unopened_square.svg";
 
 export default function Board() {
-  const [squares, setSquares] = useState(Array(81).fill(null));
+  const [squares, setSquares] = useState(Array(81).fill(<UnopenedSquare />));
   const [numberOfMines, setNumberOfMines] = useState(10);
   const [gameStarted, setGameStarted] = useState(false);
   const [gameWon, setGameWon] = useState(false);
   const [gameLost, setGameLost] = useState(false);
   const [mineIndexes, setMineIndexes] = useState([]);
   const [openedSquares, setOpenedSquares] = useState(Array(81).fill(false));
+  const [flaggedSquares, setflaggedSquares] = useState(Array(81).fill(false));
   const GRID_SIZE = 9;
 
   function handleLeftClick(index) {
@@ -57,13 +59,18 @@ export default function Board() {
     if (!gameStarted || gameWon || gameLost || openedSquares[index]) return;
 
     const nextSquares = squares.slice();
-    nextSquares[index] = squares[index] ? null : <Flag />;
+    const nextFlaggedSquares = flaggedSquares.slice();
+    nextSquares[index] = flaggedSquares[index] ? <UnopenedSquare /> : <Flag />;
+    nextFlaggedSquares[index] = !flaggedSquares[index];
     setSquares(nextSquares);
-    setNumberOfMines(squares[index] ? numberOfMines + 1 : numberOfMines - 1);
+    setflaggedSquares(nextFlaggedSquares);
+    setNumberOfMines(
+      !nextFlaggedSquares[index] ? numberOfMines + 1 : numberOfMines - 1
+    );
   }
 
-  // Opens a square in the grid, displaying the correct number of adjacent mines. 
-  // If there are no adjacent mines, also opens all neighbours. This process can 
+  // Opens a square in the grid, displaying the correct number of adjacent mines.
+  // If there are no adjacent mines, also opens all neighbours. This process can
   // repeat several times.
   function openSquare(index, mineIndexes) {
     const nextSquares = squares.slice();
@@ -89,8 +96,8 @@ export default function Board() {
       nextSquares[index] = getCorrespondingImage(numberOfAdjacentMines);
       nextOpenedSquares[index] = true;
 
-      // If there are no adjacent mines, open all adjacent locations. If any 
-      // adjacent  location has no mines adjacent to it, add it to the open list 
+      // If there are no adjacent mines, open all adjacent locations. If any
+      // adjacent location has no mines adjacent to it, add it to the open list
       // provided it has not already been opened.
       if (numberOfAdjacentMines === 0) {
         const neighbours = getNeighbours(index, GRID_SIZE);
@@ -103,11 +110,11 @@ export default function Board() {
       }
     }
 
-    // Check if the game has been won after one or more squares were opened by 
+    // Check if the game has been won after one or more squares were opened by
     // this method
     let unopenedSquare = false;
     for (let i = 0; i < nextOpenedSquares.length; i++) {
-      // If the square is not a mine and it is not opened, then we have an 
+      // If the square is not a mine and it is not opened, then we have an
       // unopened square
       if (!mineIndexes.includes(i) && !nextOpenedSquares[i]) {
         unopenedSquare = true;
@@ -138,23 +145,25 @@ export default function Board() {
 
   // Starts a fresh game
   function reset() {
-    setSquares(Array(81).fill(null));
+    setSquares(Array(81).fill(<UnopenedSquare />));
     setNumberOfMines(10);
     setGameStarted(false);
     setGameWon(false);
     setGameLost(false);
     setMineIndexes([]);
     setOpenedSquares(Array(81).fill(false));
+    setflaggedSquares(Array(81).fill(false));
   }
 
   // Starts the current game again - by not setting gameStarted to false and
   // mineIndexes to [], the mines will retain their positions.
   function replay() {
-    setSquares(Array(81).fill(null));
+    setSquares(Array(81).fill(<UnopenedSquare />));
     setNumberOfMines(10);
     setGameWon(false);
     setGameLost(false);
     setOpenedSquares(Array(81).fill(false));
+    setflaggedSquares(Array(81).fill(false));
   }
 
   let status;
@@ -236,7 +245,7 @@ function getRandomInt(max) {
 function getCorrespondingImage(n) {
   switch (n) {
     case 0:
-      return <Number0 />;
+      return null;
     case 1:
       return <Number1 />;
     case 2:
