@@ -43,6 +43,10 @@ body {
   text-align: center;
 }
 
+.square.exploded {
+  background: red;
+}
+
 svg {
   max-width: 48px;
   max-height: 48px;

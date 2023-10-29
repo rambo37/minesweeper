@@ -24,6 +24,7 @@ export default function Board() {
   const [mineIndexes, setMineIndexes] = useState([]);
   const [openedSquares, setOpenedSquares] = useState(Array(81).fill(false));
   const [flaggedSquares, setflaggedSquares] = useState(Array(81).fill(false));
+  const [explodedSquareIndex, setExplodedSquareIndex] = useState(null);
 
   function handleLeftClick(index) {
     if (gameWon || gameLost || flaggedSquares[index]) return;
@@ -45,6 +46,7 @@ export default function Board() {
         const mineIndex = mineIndexes[i];
         nextSquares[mineIndex] = <Mine />;
       }
+      setExplodedSquareIndex(index);
       setSquares(nextSquares);
       setGameLost(true);
       return;
@@ -216,6 +218,7 @@ export default function Board() {
                 value={value}
                 onLeftClick={() => handleLeftClick(index)}
                 onRightClick={(event) => handleRightClick(event, index)}
+                exploded={index === explodedSquareIndex}
               />
             );
           })}
