@@ -26,7 +26,7 @@ export default function Board() {
   const [flaggedSquares, setflaggedSquares] = useState(Array(81).fill(false));
 
   function handleLeftClick(index) {
-    if (gameWon || gameLost) return;
+    if (gameWon || gameLost || flaggedSquares[index]) return;
 
     // It is necessary to initialise the game after the user's first click
     // to ensure it is impossible for them to click on a square containing a
