@@ -173,6 +173,7 @@ export default function Board() {
     setMineIndexes([]);
     setOpenedSquares(Array(numSquares).fill(false));
     setflaggedSquares(Array(numSquares).fill(false));
+    setExplodedSquareIndex(null);
   }
 
   // Starts the current game again - by not setting gameStarted to false and
@@ -185,6 +186,7 @@ export default function Board() {
     setGameLost(false);
     setOpenedSquares(Array(numSquares).fill(false));
     setflaggedSquares(Array(numSquares).fill(false));
+    setExplodedSquareIndex(null);
   }
 
   let status;
