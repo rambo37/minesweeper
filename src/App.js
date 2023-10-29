@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Square } from "./Square";
 import { ReactComponent as Mine } from "./images/mine.svg";
 import { ReactComponent as Flag } from "./images/flag.svg";
-import { ReactComponent as Number0 } from "./images/number0.svg";
 import { ReactComponent as Number1 } from "./images/number1.svg";
 import { ReactComponent as Number2 } from "./images/number2.svg";
 import { ReactComponent as Number3 } from "./images/number3.svg";
@@ -14,15 +13,17 @@ import { ReactComponent as Number8 } from "./images/number8.svg";
 import { ReactComponent as UnopenedSquare } from "./images/unopened_square.svg";
 
 export default function Board() {
+  const [rows, setRows] = useState(9);
+  const [cols, setCols] = useState(9);
   const [squares, setSquares] = useState(Array(81).fill(<UnopenedSquare />));
   const [numberOfMines, setNumberOfMines] = useState(10);
+  const [minesRemaining, setMinesRemaining] = useState(10);
   const [gameStarted, setGameStarted] = useState(false);
   const [gameWon, setGameWon] = useState(false);
   const [gameLost, setGameLost] = useState(false);
   const [mineIndexes, setMineIndexes] = useState([]);
   const [openedSquares, setOpenedSquares] = useState(Array(81).fill(false));
   const [flaggedSquares, setflaggedSquares] = useState(Array(81).fill(false));
-  const GRID_SIZE = 9;
 
   function handleLeftClick(index) {
     if (gameWon || gameLost) return;
@@ -64,8 +65,8 @@ export default function Board() {
     nextFlaggedSquares[index] = !flaggedSquares[index];
     setSquares(nextSquares);
     setflaggedSquares(nextFlaggedSquares);
-    setNumberOfMines(
-      !nextFlaggedSquares[index] ? numberOfMines + 1 : numberOfMines - 1
+    setMinesRemaining(
+      !nextFlaggedSquares[index] ? minesRemaining + 1 : minesRemaining - 1
     );
   }
 
@@ -88,7 +89,8 @@ export default function Board() {
       const numberOfAdjacentMines = getNumberOfAdjacentMines(
         index,
         mineIndexes,
-        GRID_SIZE
+        rows,
+        cols
       );
 
       // Put the correct image in the corresponding cell of the nextSquares array
@@ -100,7 +102,7 @@ export default function Board() {
       // adjacent location has no mines adjacent to it, add it to the open list
       // provided it has not already been opened.
       if (numberOfAdjacentMines === 0) {
-        const neighbours = getNeighbours(index, GRID_SIZE);
+        const neighbours = getNeighbours(index, rows, cols);
         neighbours.forEach((neighbourIndex) => {
           // Only add the neighbour to the list if it is not already open
           if (!nextOpenedSquares[neighbourIndex]) {
@@ -143,27 +145,44 @@ export default function Board() {
     setMineIndexes(mineIndexes);
   }
 
-  // Starts a fresh game
-  function reset() {
-    setSquares(Array(81).fill(<UnopenedSquare />));
-    setNumberOfMines(10);
+  function easyMode() {
+    reset(9, 9, 10);
+  }
+
+  function mediumMode() {
+    reset(16, 16, 40);
+  }
+
+  function expertMode() {
+    reset(16, 30, 99);
+  }
+
+  // Starts a fresh game - the parameters are for the new game.
+  function reset(numRows, numCols, numMines) {
+    const numSquares = numRows * numCols;
+    setRows(numRows);
+    setCols(numCols);
+    setNumberOfMines(numMines);
+    setSquares(Array(numSquares).fill(<UnopenedSquare />));
+    setMinesRemaining(numMines);
     setGameStarted(false);
     setGameWon(false);
     setGameLost(false);
     setMineIndexes([]);
-    setOpenedSquares(Array(81).fill(false));
-    setflaggedSquares(Array(81).fill(false));
+    setOpenedSquares(Array(numSquares).fill(false));
+    setflaggedSquares(Array(numSquares).fill(false));
   }
 
   // Starts the current game again - by not setting gameStarted to false and
   // mineIndexes to [], the mines will retain their positions.
   function replay() {
-    setSquares(Array(81).fill(<UnopenedSquare />));
-    setNumberOfMines(10);
+    const numSquares = rows * cols;
+    setSquares(Array(numSquares).fill(<UnopenedSquare />));
+    setMinesRemaining(numberOfMines);
     setGameWon(false);
     setGameLost(false);
-    setOpenedSquares(Array(81).fill(false));
-    setflaggedSquares(Array(81).fill(false));
+    setOpenedSquares(Array(numSquares).fill(false));
+    setflaggedSquares(Array(numSquares).fill(false));
   }
 
   let status;
@@ -175,16 +194,21 @@ export default function Board() {
     status = "Congratulations, you won!";
     statusClass = "status win";
   } else {
-    status = `${numberOfMines} mine${numberOfMines === 1 ? "" : "s"} remaining`;
+    status = `${minesRemaining} mine${
+      minesRemaining === 1 ? "" : "s"
+    } remaining`;
     statusClass = "status";
   }
 
   return (
     <>
       <h1 className="title">Minesweeper</h1>
-      <div>
+      <div className="centered-div">
         <div className={statusClass}>{status}</div>
-        <div className="board">
+        <div
+          className="board"
+          style={{ gridTemplateColumns: `repeat(${cols}, max-content)` }}
+        >
           {squares.map((value, index) => {
             return (
               <Square
@@ -197,9 +221,24 @@ export default function Board() {
           })}
         </div>
         <div className="game-controls">
-          <button onClick={reset}>New game</button>
+          <button onClick={() => reset(rows, cols, numberOfMines)}>
+            New game
+          </button>
           <button onClick={replay} className="replay-button">
             Replay
+          </button>
+        </div>
+        <div className="difficulty-controls">
+          Select difficulty:
+          <br />
+          <button className="easy-mode" onClick={easyMode}>
+            Easy<span>9x9</span>
+          </button>
+          <button className="medium-mode" onClick={mediumMode}>
+            Medium<span>16x16</span>
+          </button>
+          <button className="expert-mode" onClick={expertMode}>
+            Expert<span>16x30</span>
           </button>
         </div>
       </div>
@@ -208,19 +247,18 @@ export default function Board() {
 }
 
 // Returns the number of adjacent mines to the square at position index
-function getNumberOfAdjacentMines(index, mineIndexes, gridSize) {
-  return getNeighbours(index, gridSize).filter((neighbourIndex) =>
+function getNumberOfAdjacentMines(index, mineIndexes, rows, cols) {
+  return getNeighbours(index, rows, cols).filter((neighbourIndex) =>
     mineIndexes.includes(neighbourIndex)
   ).length;
 }
 
 // Returns the indexes of the neighbouring squares
-function getNeighbours(index, gridSize) {
-  const top = index < gridSize ? -1 : index - gridSize;
-  const left = index % gridSize === 0 ? -1 : index - 1;
-  const right = index % gridSize === gridSize - 1 ? -1 : index + 1;
-  const bottom =
-    index >= gridSize * gridSize - gridSize ? -1 : index + gridSize;
+function getNeighbours(index, rows, cols) {
+  const top = index < cols ? -1 : index - cols;
+  const left = index % cols === 0 ? -1 : index - 1;
+  const right = index % cols === cols - 1 ? -1 : index + 1;
+  const bottom = index >= rows * cols - cols ? -1 : index + cols;
   const topLeft = top === -1 || left === -1 ? -1 : top - 1;
   const topRight = top === -1 || right === -1 ? -1 : top + 1;
   const bottomLeft = bottom === -1 || left === -1 ? -1 : bottom - 1;

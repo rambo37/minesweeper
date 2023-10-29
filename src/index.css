@@ -1,21 +1,27 @@
 :root {
   --light-gray: #e9e9e9;
-  --gray: #7B7B7B;
+  --gray: #7b7b7b;
   --dark-gray: #333333;
-  --blue: #2196F3;
+  --blue: #2196f3;
+  --easy: #148d33;
+  --medium: #e76712;
+  --expert: #ce2914;
 }
 
 body {
   font-family: sans-serif;
-  margin: 0;
+  margin-bottom: 30px;
   padding: 0;
 }
 
 #root {
+  width: 100%;
+}
+
+.centered-div {
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 100%;
 }
 
 .title {
@@ -46,7 +52,8 @@ svg {
   font-size: 1.7rem;
   margin-bottom: 20px;
   text-align: center;
-  padding: 10px;
+  padding: 10px 0px;
+  width: 100%;
 }
 
 .status.loss {
@@ -59,18 +66,18 @@ svg {
 
 .board {
   display: grid;
-  grid-template-columns: repeat(9, max-content);
 }
 
 .game-controls {
+  width: 100%;
   margin-top: 50px;
 }
 
 .game-controls button {
-  background-color: transparent;
+  background-color: var(--blue);
   width: 150px;
   border: 2px solid var(--blue);
-  color: var(--blue);
+  color: white;
   font-size: 16px;
   cursor: pointer;
   padding: 12px;
@@ -79,10 +86,64 @@ svg {
 }
 
 .game-controls button:hover {
-  background-color: var(--blue);
-  color: white;
+  background-color: transparent;
+  color: var(--blue);
 }
 
 .replay-button {
   float: right;
+}
+
+.difficulty-controls {
+  margin-top: 50px;
+}
+
+.difficulty-controls span {
+  display: block;
+  margin-top: 5px;
+}
+
+.difficulty-controls button {
+  width: 133px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  margin-top: 10px;
+  transition-duration: 0.5s;
+}
+
+.difficulty-controls button:hover {
+  background-color: transparent;
+}
+
+.easy-mode {
+  background-color: var(--easy);
+  margin-right: 20px;
+}
+
+.easy-mode:hover {
+  border: 2px solid var(--easy);
+  color: var(--easy);
+}
+
+.medium-mode {
+  background-color: var(--medium);
+  margin-right: 20px;
+}
+
+.medium-mode:hover {
+  border: 2px solid var(--medium);
+  color: var(--medium);
+}
+
+.expert-mode {
+  background-color: var(--expert);
+}
+
+.expert-mode:hover {
+  border: 2px solid var(--expert);
+  color: var(--expert);
 }
