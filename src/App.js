@@ -26,6 +26,7 @@ export default function Board() {
   const [flaggedSquares, setflaggedSquares] = useState(Array(81).fill(false));
   const [explodedSquareIndex, setExplodedSquareIndex] = useState(null);
   const [squareSize, setSquareSize] = useState("medium");
+  const [selectedMode, setSelectedMode] = useState("easy");
 
   function handleLeftClick(index) {
     if (gameWon || gameLost || flaggedSquares[index]) return;
@@ -149,14 +150,17 @@ export default function Board() {
   }
 
   function easyMode() {
+    setSelectedMode("easy");
     reset(9, 9, 10);
   }
 
   function mediumMode() {
+    setSelectedMode("medium");
     reset(16, 16, 40);
   }
 
   function expertMode() {
+    setSelectedMode("expert");
     reset(16, 30, 99);
   }
 
@@ -238,13 +242,26 @@ export default function Board() {
         <div className="difficulty-controls">
           Select difficulty:
           <br />
-          <button className="easy-mode" onClick={easyMode}>
+          <button
+            className={`easy-mode ${selectedMode === "easy" ? "active" : ""}`}
+            onClick={easyMode}
+          >
             Easy<span>9x9</span>
           </button>
-          <button className="medium-mode" onClick={mediumMode}>
+          <button
+            className={`medium-mode ${
+              selectedMode === "medium" ? "active" : ""
+            }`}
+            onClick={mediumMode}
+          >
             Medium<span>16x16</span>
           </button>
-          <button className="expert-mode" onClick={expertMode}>
+          <button
+            className={`expert-mode ${
+              selectedMode === "expert" ? "active" : ""
+            }`}
+            onClick={expertMode}
+          >
             Expert<span>16x30</span>
           </button>
         </div>

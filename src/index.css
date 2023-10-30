@@ -126,6 +126,10 @@ body {
   width: 100%;
 }
 
+.difficulty-controls button.active {
+  border: 2px solid black;
+}
+
 .difficulty-controls span {
   display: block;
   margin-top: 5px;
@@ -152,7 +156,7 @@ body {
   margin-right: 20px;
 }
 
-.easy-mode:hover {
+.easy-mode:hover, .easy-mode.active:hover {
   border: 2px solid var(--easy);
   color: var(--easy);
 }
@@ -162,7 +166,7 @@ body {
   margin-right: 20px;
 }
 
-.medium-mode:hover {
+.medium-mode:hover, .medium-mode.active:hover {
   border: 2px solid var(--medium);
   color: var(--medium);
 }
@@ -171,7 +175,7 @@ body {
   background-color: var(--expert);
 }
 
-.expert-mode:hover {
+.expert-mode:hover, .expert-mode.active:hover {
   border: 2px solid var(--expert);
   color: var(--expert);
 }
