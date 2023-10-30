@@ -1,7 +1,7 @@
-export function Square({ value, onLeftClick, onRightClick, exploded }) {
+export function Square({ value, onLeftClick, onRightClick, exploded, size }) {
   return (
     <button
-      className={`square ${exploded ? "exploded" : ""}`}
+      className={`square ${exploded ? "exploded" : ""} ` + size}
       onClick={onLeftClick}
       onContextMenu={onRightClick}
     >

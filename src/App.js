@@ -25,6 +25,7 @@ export default function Board() {
   const [openedSquares, setOpenedSquares] = useState(Array(81).fill(false));
   const [flaggedSquares, setflaggedSquares] = useState(Array(81).fill(false));
   const [explodedSquareIndex, setExplodedSquareIndex] = useState(null);
+  const [squareSize, setSquareSize] = useState("medium");
 
   function handleLeftClick(index) {
     if (gameWon || gameLost || flaggedSquares[index]) return;
@@ -221,6 +222,7 @@ export default function Board() {
                 onLeftClick={() => handleLeftClick(index)}
                 onRightClick={(event) => handleRightClick(event, index)}
                 exploded={index === explodedSquareIndex}
+                size={squareSize}
               />
             );
           })}
@@ -245,6 +247,19 @@ export default function Board() {
           <button className="expert-mode" onClick={expertMode}>
             Expert<span>16x30</span>
           </button>
+        </div>
+        <div className="board-size-controls">
+          <label htmlFor="sizes">Select square size:</label>
+          <select
+            name="sizes"
+            id="sizes"
+            value={squareSize}
+            onChange={(e) => setSquareSize(e.target.value)}
+          >
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+          </select>
         </div>
       </div>
     </>
