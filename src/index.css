@@ -22,6 +22,7 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
+  max-width: 100%;
 }
 
 .title {
@@ -93,6 +94,7 @@ body {
 
 .board {
   display: grid;
+  max-width: 100%;
 }
 
 .game-controls {
@@ -187,4 +189,99 @@ body {
 
 .board-size-controls label {
   margin-right: 10px;
+}
+
+
+@media screen and (max-width: 1500px) {
+  .square.medium {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .square.medium svg {
+    max-width: 34px;
+    max-height: 34px;
+  }
+  
+  .square.large {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .square.large svg {
+    max-width: 38px;
+    max-height: 38px;
+  }
+}
+
+
+@media screen and (max-width: 1200px) {
+  .square.large {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .square.large svg {
+    max-width: 33px;
+    max-height: 33px;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .square.small {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .square.small svg {
+    max-width: 20px;
+    max-height: 20px;
+  }
+  
+  .square.medium {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .square.medium svg {
+    max-width: 24px;
+    max-height: 24px;
+  }
+  
+  .square.large {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .square.large svg {
+    max-width: 28px;
+    max-height: 28px;
+  }
+
+  .board {
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+}
+
+@media screen and (max-width: 330px) {
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .game-controls button {
+    width: 100px;
+    padding: 12px 5px;
+  }
+
+  .difficulty-controls button {
+    width: 100px;
+    padding: 5px;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .title {
+    font-size: 2.1rem;
+  }
 }
