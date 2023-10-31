@@ -47,6 +47,12 @@ export default function Board() {
   const [explodedSquareIndex, setExplodedSquareIndex] = useState(null);
   const [squareSize, setSquareSize] = useState("medium");
 
+  window.onbeforeunload = function () {
+    if (gameInProgress()) {
+      return "Are you sure you want to leave?";
+    }
+  };
+
   function handleLeftClick(index) {
     if (gameWon || gameLost || flaggedSquares[index]) return;
 
@@ -168,23 +174,23 @@ export default function Board() {
     setMineIndexes(mineIndexes);
   }
 
+  // Only change the selected mode if the game is successfully reset
   function easyMode() {
-    setSelectedMode(EASY);
-    reset(EASY.rows, EASY.cols, EASY.mines);
+    if (reset(EASY.rows, EASY.cols, EASY.mines)) setSelectedMode(EASY);
   }
 
   function mediumMode() {
-    setSelectedMode(MEDIUM);
-    reset(MEDIUM.rows, MEDIUM.cols, MEDIUM.mines);
+    if (reset(MEDIUM.rows, MEDIUM.cols, MEDIUM.mines)) setSelectedMode(MEDIUM);
   }
 
   function expertMode() {
-    setSelectedMode(EXPERT);
-    reset(EXPERT.rows, EXPERT.cols, EXPERT.mines);
+    if (reset(EXPERT.rows, EXPERT.cols, EXPERT.mines)) setSelectedMode(EXPERT);
   }
 
-  // Starts a fresh game - the parameters are for the new game.
+  // Starts a fresh game - the parameters are for the new game. Returns true if
+  // the game is successfully restarted and false otherwise
   function reset(numRows, numCols, numMines) {
+    if (!checkAndWarnForProgessLoss()) return false;
     const numSquares = numRows * numCols;
     setRows(numRows);
     setCols(numCols);
@@ -198,11 +204,13 @@ export default function Board() {
     setOpenedSquares(Array(numSquares).fill(false));
     setflaggedSquares(Array(numSquares).fill(false));
     setExplodedSquareIndex(null);
+    return true;
   }
 
   // Starts the current game again - by not setting gameStarted to false and
   // mineIndexes to [], the mines will retain their positions.
   function replay() {
+    if (!checkAndWarnForProgessLoss()) return;
     const numSquares = rows * cols;
     setSquares(Array(numSquares).fill(<UnopenedSquare />));
     setMinesRemaining(numberOfMines);
@@ -211,6 +219,27 @@ export default function Board() {
     setOpenedSquares(Array(numSquares).fill(false));
     setflaggedSquares(Array(numSquares).fill(false));
     setExplodedSquareIndex(null);
+  }
+
+  // Returns false if the game should not be ended/restarted and true otherwise
+  function checkAndWarnForProgessLoss() {
+    if (gameInProgress()) {
+      if (!window.confirm("Progress will be lost. Are you sure?")) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function gameInProgress() {
+    return atLeastOneOpenedSquare() && !gameLost && !gameWon;
+  }
+
+  function atLeastOneOpenedSquare() {
+    for (let i = 0; i < openedSquares.length; i++) {
+      if (openedSquares[i]) return true;
+    }
+    return false;
   }
 
   let status;
