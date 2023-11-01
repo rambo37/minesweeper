@@ -141,21 +141,22 @@ export default function Board() {
       }
     }
 
-    // Check if the game has been won after one or more squares were opened by
-    // this method
-    let unopenedSquare = false;
-    for (let i = 0; i < nextOpenedSquares.length; i++) {
-      // If the square is not a mine and it is not opened, then we have an
-      // unopened square
-      if (!mineIndexes.includes(i) && !nextOpenedSquares[i]) {
-        unopenedSquare = true;
-        break;
-      }
-    }
-    // The game has been won if there are no unopened squares remaining
-    setGameWon(!unopenedSquare);
+    setGameWon(gameHasBeenWon(mineIndexes, nextOpenedSquares));
     setSquares(nextSquares);
     setOpenedSquares(nextOpenedSquares);
+  }
+
+  // Checks if the game has been won (i.e., there are no unopened squares remaining
+  // that do not contain mines)
+  function gameHasBeenWon(mineIndexes, openedSquares) {
+    for (let i = 0; i < openedSquares.length; i++) {
+      // If the square is not a mine and it is not opened, then we have an
+      // unopened square
+      if (!mineIndexes.includes(i) && !openedSquares[i]) {
+        return false;
+      }
+    }
+    return true;
   }
 
   // startingSquareIndex must not contain a mine
