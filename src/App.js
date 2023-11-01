@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Square } from "./Square";
+import { Board } from "./Board";
 import { ReactComponent as Mine } from "./images/mine.svg";
 import { ReactComponent as Flag } from "./images/flag.svg";
 import { ReactComponent as Number1 } from "./images/number1.svg";
@@ -30,7 +30,7 @@ const EXPERT = {
   mines: 99,
 };
 
-export default function Board() {
+export default function App() {
   const [selectedMode, setSelectedMode] = useState(EASY);
   const [rows, setRows] = useState(selectedMode.rows);
   const [cols, setCols] = useState(selectedMode.cols);
@@ -263,23 +263,14 @@ export default function Board() {
       <h1 className="title">Minesweeper</h1>
       <div className="centered-div">
         <div className={statusClass}>{status}</div>
-        <div
-          className="board"
-          style={{ gridTemplateColumns: `repeat(${cols}, max-content)` }}
-        >
-          {squares.map((value, index) => {
-            return (
-              <Square
-                key={`square${index}`}
-                value={value}
-                onLeftClick={() => handleLeftClick(index)}
-                onRightClick={(event) => handleRightClick(event, index)}
-                exploded={index === explodedSquareIndex}
-                size={squareSize}
-              />
-            );
-          })}
-        </div>
+        <Board
+          cols={cols}
+          handleLeftClick={handleLeftClick}
+          handleRightClick={handleRightClick}
+          squares={squares}
+          explodedSquareIndex={explodedSquareIndex}
+          squareSize={squareSize}
+        />
         <div className="game-controls">
           <button onClick={() => reset(rows, cols, numberOfMines)}>
             New game
