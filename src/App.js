@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Board } from "./Board";
+import { Timer } from "./Timer";
 import { ReactComponent as Mine } from "./images/mine.svg";
 import { ReactComponent as Flag } from "./images/flag.svg";
 import { ReactComponent as Number1 } from "./images/number1.svg";
@@ -46,6 +47,8 @@ export default function App() {
   const [flaggedSquares, setflaggedSquares] = useState(Array(size).fill(false));
   const [explodedSquareIndex, setExplodedSquareIndex] = useState(null);
   const [squareSize, setSquareSize] = useState("medium");
+  const [seconds, setSeconds] = useState(0);
+  const [paused, setPaused] = useState(true);
 
   window.onbeforeunload = function () {
     if (gameInProgress()) {
@@ -55,6 +58,8 @@ export default function App() {
 
   function handleLeftClick(index) {
     if (gameWon || gameLost || flaggedSquares[index]) return;
+
+    if (paused) setPaused(false);
 
     // It is necessary to initialise the game after the user's first click
     // to ensure it is impossible for them to click on a square containing a
@@ -76,6 +81,7 @@ export default function App() {
       setExplodedSquareIndex(index);
       setSquares(nextSquares);
       setGameLost(true);
+      setPaused(true);
       return;
     }
 
@@ -141,7 +147,10 @@ export default function App() {
       }
     }
 
-    setGameWon(gameHasBeenWon(mineIndexes, nextOpenedSquares));
+    if (gameHasBeenWon(mineIndexes, nextOpenedSquares)) {
+      setPaused(true);
+      setGameWon(true);
+    }
     setSquares(nextSquares);
     setOpenedSquares(nextOpenedSquares);
   }
@@ -205,6 +214,7 @@ export default function App() {
     setOpenedSquares(Array(numSquares).fill(false));
     setflaggedSquares(Array(numSquares).fill(false));
     setExplodedSquareIndex(null);
+    resetTimer();
     return true;
   }
 
@@ -220,6 +230,7 @@ export default function App() {
     setOpenedSquares(Array(numSquares).fill(false));
     setflaggedSquares(Array(numSquares).fill(false));
     setExplodedSquareIndex(null);
+    resetTimer();
   }
 
   // Returns false if the game should not be ended/restarted and true otherwise
@@ -243,6 +254,11 @@ export default function App() {
     return false;
   }
 
+  function resetTimer() {
+    setSeconds(0);
+    setPaused(true);
+  }
+
   let status;
   let statusClass;
   if (gameLost) {
@@ -262,7 +278,10 @@ export default function App() {
     <>
       <h1 className="title">Minesweeper</h1>
       <div className="centered-div">
-        <div className={statusClass}>{status}</div>
+        <div className={statusClass}>
+          {status}
+          <Timer seconds={seconds} setSeconds={setSeconds} paused={paused} />
+        </div>
         <Board
           cols={cols}
           handleLeftClick={handleLeftClick}
