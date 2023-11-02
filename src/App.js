@@ -377,20 +377,20 @@ function getCorrespondingImage(n) {
     case 0:
       return null;
     case 1:
-      return <Number1 />;
+      return <Number1 className="number" />;
     case 2:
-      return <Number2 />;
+      return <Number2 className="number" />;
     case 3:
-      return <Number3 />;
+      return <Number3 className="number" />;
     case 4:
-      return <Number4 />;
+      return <Number4 className="number" />;
     case 5:
-      return <Number5 />;
+      return <Number5 className="number" />;
     case 6:
-      return <Number6 />;
+      return <Number6 className="number" />;
     case 7:
-      return <Number7 />;
+      return <Number7 className="number" />;
     default:
-      return <Number8 />;
+      return <Number8 className="number" />;
   }
 }
