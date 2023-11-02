@@ -9,7 +9,7 @@ export function Timer(props) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [props]);
+  }, [props.seconds, props.paused]);
 
   let text = `Time elapsed: ${props.seconds} `;
   text += props.seconds === 1 ? "second" : "seconds";
