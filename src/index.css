@@ -10,7 +10,6 @@
 
 body {
   font-family: sans-serif;
-  margin-bottom: 30px;
   padding: 0;
 }
 
@@ -199,6 +198,11 @@ body {
 
 .board-size-controls label {
   margin-right: 10px;
+}
+
+.help {
+  margin: 75px 5% 0px 5%;
+  text-align: left;
 }
 
 
