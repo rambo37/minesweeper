@@ -1,18 +1,18 @@
 import React, { useEffect } from "react";
 
-export function Timer(props) {
+export function Timer({paused, seconds, setSeconds}) {
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!props.paused) {
-        props.setSeconds(props.seconds + 1);
+      if (!paused) {
+        setSeconds(seconds + 1);
       }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [props.seconds, props.paused]);
+  }, [paused, seconds]);
 
-  let text = `Time elapsed: ${props.seconds} `;
-  text += props.seconds === 1 ? "second" : "seconds";
+  let text = `Time elapsed: ${seconds} `;
+  text += seconds === 1 ? "second" : "seconds";
 
   return <div>{text}</div>;
 }

@@ -1,6 +1,11 @@
 import { useState } from "react";
+import { EASY, MEDIUM, EXPERT } from "./constants";
+import { Status } from "./Status";
 import { Board } from "./Board";
-import { Timer } from "./Timer";
+import { GameControls } from "./GameControls";
+import { DifficultySelector } from "./DifficultySelector";
+import { SquareSizeSelector } from "./SquareSizeSelector";
+import { Help } from "./Help";
 import { ReactComponent as Mine } from "./images/mine.svg";
 import { ReactComponent as Flag } from "./images/flag.svg";
 import { ReactComponent as Number1 } from "./images/number1.svg";
@@ -12,24 +17,6 @@ import { ReactComponent as Number6 } from "./images/number6.svg";
 import { ReactComponent as Number7 } from "./images/number7.svg";
 import { ReactComponent as Number8 } from "./images/number8.svg";
 import { ReactComponent as UnopenedSquare } from "./images/unopened_square.svg";
-
-const EASY = {
-  rows: 9,
-  cols: 9,
-  mines: 10,
-};
-
-const MEDIUM = {
-  rows: 16,
-  cols: 16,
-  mines: 40,
-};
-
-const EXPERT = {
-  rows: 16,
-  cols: 30,
-  mines: 99,
-};
 
 export default function App() {
   const [selectedMode, setSelectedMode] = useState(EASY);
@@ -278,10 +265,13 @@ export default function App() {
     <>
       <h1 className="title">Minesweeper</h1>
       <div className="centered-div">
-        <div className={statusClass}>
-          {status}
-          <Timer seconds={seconds} setSeconds={setSeconds} paused={paused} />
-        </div>
+        <Status
+          statusClass={statusClass}
+          status={status}
+          seconds={seconds}
+          setSeconds={setSeconds}
+          paused={paused}
+        />
         <Board
           cols={cols}
           handleLeftClick={handleLeftClick}
@@ -290,106 +280,25 @@ export default function App() {
           explodedSquareIndex={explodedSquareIndex}
           squareSize={squareSize}
         />
-        <div className="game-controls">
-          <button onClick={() => reset(rows, cols, numberOfMines)}>
-            New game
-          </button>
-          <button onClick={replay} className="replay-button">
-            Replay
-          </button>
-        </div>
-        <div className="difficulty-controls">
-          Select difficulty:
-          <br />
-          <button
-            className={`easy-mode ${selectedMode === EASY ? "active" : ""}`}
-            onClick={easyMode}
-          >
-            Easy<span>9x9</span>
-          </button>
-          <button
-            className={`medium-mode ${selectedMode === MEDIUM ? "active" : ""}`}
-            onClick={mediumMode}
-          >
-            Medium<span>16x16</span>
-          </button>
-          <button
-            className={`expert-mode ${selectedMode === EXPERT ? "active" : ""}`}
-            onClick={expertMode}
-          >
-            Expert<span>16x30</span>
-          </button>
-        </div>
-        <div className="board-size-controls">
-          <label htmlFor="sizes">Select square size:</label>
-          <select
-            name="sizes"
-            id="sizes"
-            value={squareSize}
-            onChange={(e) => setSquareSize(e.target.value)}
-          >
-            <option value="small">Small</option>
-            <option value="medium">Medium</option>
-            <option value="large">Large</option>
-          </select>
-        </div>
+        <GameControls
+          rows={rows}
+          cols={cols}
+          numberOfMines={numberOfMines}
+          reset={reset}
+          replay={replay}
+        />
+        <DifficultySelector
+          selectedMode={selectedMode}
+          easyMode={easyMode}
+          mediumMode={mediumMode}
+          expertMode={expertMode}
+        />
+        <SquareSizeSelector
+          squareSize={squareSize}
+          setSquareSize={setSquareSize}
+        />
       </div>
-      <div className="help">
-        <h3>How to play</h3>
-        <p>
-          The objective of Minesweeper is to open all squares of the grid that
-          do not contain mines. If you click on a square with a mine, the game
-          ends as a loss. To begin a game, you must left-click on a square. The
-          first square is guaranteed to be safe (assuming you are starting a
-          fresh game rather than replaying the previous game).
-        </p>
-        <p>When you left-click on a square, there are 3 possibilities.</p>
-        <ol>
-          <li>The square contains a mine and the game ends.</li>
-          <li>
-            The square does not contain a mine but is adjacent to at least one
-            mine. In this case, a number appears in the opened square indicating
-            how many mines are adjacent to the square (including diagonals).
-            Using this information, you may be able to deduce which neighbouring
-            squares are safe/dangerous. However, sometimes it is necessary to
-            make a guess. In such scenarios, it may be worth considering the
-            probability of each square containing a mine.
-          </li>
-          <li>
-            The square is not adjacent to any mines. This results in all
-            adjacent squares being opened and if any of those squares also have
-            no mines adjacent to them, then those are also opened. This can
-            repeat many times, potentially opening up a significant portion of
-            the grid.
-          </li>
-        </ol>
-        <p>
-          In order to keep track of which squares you suspect may contain mines
-          (and to avoid accidentally opening them), you can right-click to flag
-          that square. This will make it impossible for you to open the square
-          by left-clicking unless you first right-click again to unflag the
-          square. There is no restriction on how many flags you can place. Each
-          flag you place results in the displayed number of mines remaining
-          decreasing by 1. This happens regardless of whether the flag was
-          actually placed on a mine. Similarly, unflagging a square increments
-          the displayed number of remaining mines by 1. Note that there is no
-          need to flag squares that you suspect contain mines; the game can be
-          won without flagging a single square.
-        </p>
-        <p>
-          Underneath the grid you will find two blue buttons. The "New game"
-          button starts a fresh game whereas the "Replay" button restarts the
-          current game, retaining the mine positions. Furhter down, you will
-          find three buttons that are used to change the difficulty. Increasing
-          the difficulty increases the board size as well as the number of
-          mines. If you are in the middle of a game, all of these buttons will
-          first warn you if you want to proceed in order to prevent accidentally
-          erasing your progress. Finally, there is a drop down menu that allows
-          you to change the size of the squares of the grid. This can be used at
-          any time without risk of losing game progress as it just resizes the
-          squares.
-        </p>
-      </div>
+      <Help />
     </>
   );
 }
