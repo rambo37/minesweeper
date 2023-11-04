@@ -6,6 +6,7 @@
   --easy: #148d33;
   --medium: #e76712;
   --expert: #ce2914;
+  --custom: #7e6be6;
 }
 
 body {
@@ -184,11 +185,52 @@ body {
 
 .expert-mode {
   background-color: var(--expert);
+  margin-right: 20px;
 }
 
 .expert-mode:hover, .expert-mode.active:hover {
   border: 2px solid var(--expert);
   color: var(--expert);
+}
+
+.custom-mode {
+  background-color: var(--custom);
+}
+
+.custom-mode:hover, .expert-mode.active:hover {
+  border: 2px solid var(--custom);
+  color: var(--custom);
+}
+
+.hidden {
+  display: none;
+}
+
+.custom-inputs {
+  margin-top: 30px;
+}
+
+.custom-inputs input {
+  max-width: 37px;
+  margin-right: 20px;
+}
+
+.custom-inputs button {
+  margin-left: 10px;
+  background-color: var(--blue);
+}
+
+.custom-inputs button:hover {
+  border: 2px solid var(--blue);
+  color: var(--blue);
+}
+
+.error-div {
+  background-color: #ff4949;
+  color: white;
+  padding: 15px;
+  margin-top: 20px;
+  text-align: center;
 }
 
 .board-size-controls {
@@ -312,6 +354,23 @@ body {
     overflow-y: hidden;
   }
 }
+
+@media screen and (max-width: 430px) {
+  .custom-inputs {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .custom-inputs * {
+    margin-top: 10px;
+  }
+
+  .custom-inputs button {
+    margin-left: 0px;
+    margin-top: 20px;
+  }
+}
+
 
 @media screen and (max-width: 330px) {
   .title {

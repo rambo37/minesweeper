@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { EASY, MEDIUM, EXPERT } from "./constants";
+import { EASY, MEDIUM, EXPERT, CUSTOM } from "./constants";
 import { Status } from "./Status";
 import { Board } from "./Board";
 import { GameControls } from "./GameControls";
@@ -184,6 +184,10 @@ export default function App() {
     if (reset(EXPERT.rows, EXPERT.cols, EXPERT.mines)) setSelectedMode(EXPERT);
   }
 
+  function customMode(customRows, customCols, customMines) {
+    if (reset(customRows, customCols, customMines)) setSelectedMode(CUSTOM);
+  }
+
   // Starts a fresh game - the parameters are for the new game. Returns true if
   // the game is successfully restarted and false otherwise
   function reset(numRows, numCols, numMines) {
@@ -292,6 +296,7 @@ export default function App() {
           easyMode={easyMode}
           mediumMode={mediumMode}
           expertMode={expertMode}
+          customMode={customMode}
         />
         <SquareSizeSelector
           squareSize={squareSize}
