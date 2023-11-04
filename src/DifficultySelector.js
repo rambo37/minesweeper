@@ -8,8 +8,8 @@ export function DifficultySelector({
   expertMode,
   customMode,
 }) {
-  // These state variables and setters have been defined in this component rather 
-  // than in the parent (App) since the parent does not ever manipulate these 
+  // These state variables and setters have been defined in this component rather
+  // than in the parent (App) since the parent does not ever manipulate these
   // values or handle any of the logic.
   const [customRows, setCustomRows] = useState(CUSTOM.rows);
   const [customCols, setCustomCols] = useState(CUSTOM.cols);
@@ -21,12 +21,23 @@ export function DifficultySelector({
     customMode(customRows, customCols, customMines);
   }
 
-  // Checks the game parameters are valid. Displays an error and returns false if 
+  // Checks the game parameters are valid. Displays an error and returns false if
   // they are not, else removes any errors that may be present and returns true.
   function validateParameters() {
     if (customRows < 1 || customCols < 1 || customMines < 1) {
       setError(
         "The number of rows, columns, and mines must all be at least 1."
+      );
+      return false;
+    }
+
+    if (
+      !Number.isInteger(customRows) ||
+      !Number.isInteger(customCols) ||
+      !Number.isInteger(customMines)
+    ) {
+      setError(
+        "The number of rows, columns, and mines must all be whole numbers."
       );
       return false;
     }
