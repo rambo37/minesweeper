@@ -104,7 +104,7 @@ body {
 
 .board {
   display: grid;
-  max-width: 100%;
+  width: 100%;
 }
 
 .game-controls {
@@ -202,7 +202,7 @@ body {
   color: var(--custom);
 }
 
-.hidden {
+.custom-inputs.hidden {
   display: none;
 }
 
@@ -350,12 +350,12 @@ body {
   }
 
   .board {
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
   }
 }
 
-@media screen and (max-width: 430px) {
+@media screen and (max-width: 530px) {
   .custom-inputs {
     display: flex;
     flex-direction: column;
@@ -369,6 +369,25 @@ body {
     margin-left: 0px;
     margin-top: 20px;
   }
+
+  #root > .centered-div > div:not(.board, .status) {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .game-controls button {
+    width: 120px;
+    padding: 12px 5px;
+  }
+}
+
+@media screen and (max-width: 356px) {
+  .difficulty-controls button {
+    display: block;
+  }
 }
 
 
@@ -379,7 +398,6 @@ body {
 
   .game-controls button {
     width: 100px;
-    padding: 12px 5px;
   }
 
   .difficulty-controls button {
