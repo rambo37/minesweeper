@@ -114,7 +114,7 @@ body {
 
 .game-controls button {
   background-color: var(--blue);
-  width: 150px;
+  width: 133px;
   border: 2px solid var(--blue);
   color: white;
   font-size: 16px;
@@ -147,6 +147,12 @@ body {
   margin-top: 5px;
 }
 
+.difficulty-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .difficulty-controls button {
   width: 133px;
   color: white;
@@ -168,7 +174,8 @@ body {
   margin-right: 20px;
 }
 
-.easy-mode:hover, .easy-mode.active:hover {
+.easy-mode:hover,
+.easy-mode.active:hover {
   border: 2px solid var(--easy);
   color: var(--easy);
 }
@@ -178,7 +185,8 @@ body {
   margin-right: 20px;
 }
 
-.medium-mode:hover, .medium-mode.active:hover {
+.medium-mode:hover,
+.medium-mode.active:hover {
   border: 2px solid var(--medium);
   color: var(--medium);
 }
@@ -188,7 +196,8 @@ body {
   margin-right: 20px;
 }
 
-.expert-mode:hover, .expert-mode.active:hover {
+.expert-mode:hover,
+.expert-mode.active:hover {
   border: 2px solid var(--expert);
   color: var(--expert);
 }
@@ -197,7 +206,8 @@ body {
   background-color: var(--custom);
 }
 
-.custom-mode:hover, .expert-mode.active:hover {
+.custom-mode:hover,
+.expert-mode.active:hover {
   border: 2px solid var(--custom);
   color: var(--custom);
 }
@@ -247,23 +257,22 @@ body {
   text-align: left;
 }
 
-
 @media screen and (max-width: 1500px) {
   .square.medium {
     width: 36px;
     height: 36px;
   }
-  
+
   .square.medium svg {
     max-width: 34px;
     max-height: 34px;
   }
-  
+
   .square.large {
     width: 42px;
     height: 42px;
   }
-  
+
   .square.large svg {
     max-width: 38px;
     max-height: 38px;
@@ -275,13 +284,12 @@ body {
   }
 }
 
-
 @media screen and (max-width: 1250px) {
   .square.medium {
     width: 32px;
     height: 32px;
   }
-  
+
   .square.medium svg {
     max-width: 30px;
     max-height: 30px;
@@ -296,7 +304,7 @@ body {
     width: 37px;
     height: 37px;
   }
-  
+
   .square.large svg {
     max-width: 35px;
     max-height: 35px;
@@ -308,7 +316,7 @@ body {
     width: 24px;
     height: 24px;
   }
-  
+
   .square.small svg {
     max-width: 22px;
     max-height: 22px;
@@ -318,12 +326,12 @@ body {
     max-width: 18px;
     max-height: 18px;
   }
-  
+
   .square.medium {
     width: 28px;
     height: 28px;
   }
-  
+
   .square.medium svg {
     max-width: 26px;
     max-height: 26px;
@@ -333,12 +341,12 @@ body {
     max-width: 20px;
     max-height: 20px;
   }
-  
+
   .square.large {
     width: 30px;
     height: 30px;
   }
-  
+
   .square.large svg {
     max-width: 28px;
     max-height: 28px;
@@ -355,7 +363,7 @@ body {
   }
 }
 
-@media screen and (max-width: 530px) {
+@media screen and (max-width: 620px) {
   .custom-inputs {
     display: flex;
     flex-direction: column;
@@ -375,6 +383,24 @@ body {
     margin-left: 5%;
     margin-right: 5%;
   }
+
+  .difficulty-buttons {
+    justify-content: space-between;
+  }
+
+  .easy-mode, .expert-mode {
+    margin-right: 75px;
+  }
+
+  .medium-mode {
+    margin-right: 0px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .difficulty-controls button {
+    margin-right: 0px;
+  }
 }
 
 @media screen and (max-width: 370px) {
@@ -382,14 +408,11 @@ body {
     width: 120px;
     padding: 12px 5px;
   }
-}
 
-@media screen and (max-width: 356px) {
   .difficulty-controls button {
-    display: block;
+    width: 120px;
   }
 }
-
 
 @media screen and (max-width: 330px) {
   .title {

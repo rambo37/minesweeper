@@ -69,30 +69,32 @@ export function DifficultySelector({
     <div className="difficulty-controls">
       Select difficulty:
       <br />
-      <button
-        className={`easy-mode ${selectedMode === EASY ? "active" : ""}`}
-        onClick={() => easyMode()}
-      >
-        Easy<span>9x9</span>
-      </button>
-      <button
-        className={`medium-mode ${selectedMode === MEDIUM ? "active" : ""}`}
-        onClick={() => mediumMode()}
-      >
-        Medium<span>16x16</span>
-      </button>
-      <button
-        className={`expert-mode ${selectedMode === EXPERT ? "active" : ""}`}
-        onClick={() => expertMode()}
-      >
-        Expert<span>16x30</span>
-      </button>
-      <button
-        className={`custom-mode ${selectedMode === CUSTOM ? "active" : ""}`}
-        onClick={() => customMode(customRows, customCols, customMines)}
-      >
-        Custom<span>?</span>
-      </button>
+      <div className="difficulty-buttons">
+        <button
+          className={`easy-mode ${selectedMode === EASY ? "active" : ""}`}
+          onClick={() => easyMode()}
+        >
+          Easy<span>9x9</span>
+        </button>
+        <button
+          className={`medium-mode ${selectedMode === MEDIUM ? "active" : ""}`}
+          onClick={() => mediumMode()}
+        >
+          Medium<span>16x16</span>
+        </button>
+        <button
+          className={`expert-mode ${selectedMode === EXPERT ? "active" : ""}`}
+          onClick={() => expertMode()}
+        >
+          Expert<span>16x30</span>
+        </button>
+        <button
+          className={`custom-mode ${selectedMode === CUSTOM ? "active" : ""}`}
+          onClick={() => customMode(customRows, customCols, customMines)}
+        >
+          Custom<span>?</span>
+        </button>
+      </div>
       <div
         className={`custom-inputs ${selectedMode === CUSTOM ? "" : "hidden"}`}
       >
