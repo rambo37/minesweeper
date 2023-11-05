@@ -284,24 +284,26 @@ export default function App() {
           explodedSquareIndex={explodedSquareIndex}
           squareSize={squareSize}
         />
-        <GameControls
-          rows={rows}
-          cols={cols}
-          numberOfMines={numberOfMines}
-          reset={reset}
-          replay={replay}
-        />
-        <DifficultySelector
-          selectedMode={selectedMode}
-          easyMode={easyMode}
-          mediumMode={mediumMode}
-          expertMode={expertMode}
-          customMode={customMode}
-        />
-        <SquareSizeSelector
-          squareSize={squareSize}
-          setSquareSize={setSquareSize}
-        />
+        <div>
+          <GameControls
+            rows={rows}
+            cols={cols}
+            numberOfMines={numberOfMines}
+            reset={reset}
+            replay={replay}
+          />
+          <DifficultySelector
+            selectedMode={selectedMode}
+            easyMode={easyMode}
+            mediumMode={mediumMode}
+            expertMode={expertMode}
+            customMode={customMode}
+          />
+          <SquareSizeSelector
+            squareSize={squareSize}
+            setSquareSize={setSquareSize}
+          />
+        </div>
       </div>
       <Help />
     </>
