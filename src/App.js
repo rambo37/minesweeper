@@ -26,7 +26,10 @@ export default function App() {
   const [squares, setSquares] = useState(Array(size).fill(<UnopenedSquare />));
   const [numberOfMines, setNumberOfMines] = useState(selectedMode.mines);
   const [minesRemaining, setMinesRemaining] = useState(selectedMode.mines);
+  // This keeps track of whether at least one square has been opened
   const [gameStarted, setGameStarted] = useState(false);
+  // This keeps track of whether the mines have been placed
+  const [gameInitialised, setGameInitialised] = useState(false);
   const [gameWon, setGameWon] = useState(false);
   const [gameLost, setGameLost] = useState(false);
   const [mineIndexes, setMineIndexes] = useState([]);
@@ -51,8 +54,8 @@ export default function App() {
     // It is necessary to initialise the game after the user's first click
     // to ensure it is impossible for them to click on a square containing a
     // mine right at the beginning.
-    if (!gameStarted) {
-      setGameStarted(true);
+    if (!gameInitialised) {
+      setGameInitialised(true);
       initaliseGame(index);
       return;
     }
@@ -77,9 +80,9 @@ export default function App() {
 
   function handleRightClick(event, index) {
     event.preventDefault();
-    // Do nothing if the game has not started / has finished or if the square that
-    // was right-clicked was already open
-    if (!gameStarted || gameWon || gameLost || openedSquares[index]) return;
+    // Do nothing if the game has not been initialised / has finished or if the
+    // square that was right-clicked was already open
+    if (!gameInitialised || gameWon || gameLost || openedSquares[index]) return;
 
     const nextSquares = squares.slice();
     const nextFlaggedSquares = flaggedSquares.slice();
@@ -96,6 +99,7 @@ export default function App() {
   // If there are no adjacent mines, also opens all neighbours. This process can
   // repeat several times.
   function openSquare(index, mineIndexes) {
+    setGameStarted(true);
     const nextSquares = squares.slice();
     const nextOpenedSquares = openedSquares.slice();
 
@@ -198,6 +202,7 @@ export default function App() {
     setNumberOfMines(numMines);
     setSquares(Array(numSquares).fill(<UnopenedSquare />));
     setMinesRemaining(numMines);
+    setGameInitialised(false);
     setGameStarted(false);
     setGameWon(false);
     setGameLost(false);
@@ -209,13 +214,14 @@ export default function App() {
     return true;
   }
 
-  // Starts the current game again - by not setting gameStarted to false and
+  // Starts the current game again - by not setting gameInitialised to false and
   // mineIndexes to [], the mines will retain their positions.
   function replay() {
     if (!checkAndWarnForProgessLoss()) return;
     const numSquares = rows * cols;
     setSquares(Array(numSquares).fill(<UnopenedSquare />));
     setMinesRemaining(numberOfMines);
+    setGameStarted(false);
     setGameWon(false);
     setGameLost(false);
     setOpenedSquares(Array(numSquares).fill(false));
@@ -235,14 +241,7 @@ export default function App() {
   }
 
   function gameInProgress() {
-    return atLeastOneOpenedSquare() && !gameLost && !gameWon;
-  }
-
-  function atLeastOneOpenedSquare() {
-    for (let i = 0; i < openedSquares.length; i++) {
-      if (openedSquares[i]) return true;
-    }
-    return false;
+    return gameStarted && !gameLost && !gameWon;
   }
 
   function resetTimer() {
