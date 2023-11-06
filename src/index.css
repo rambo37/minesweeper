@@ -225,6 +225,15 @@ body {
   margin-right: 20px;
 }
 
+.custom-inputs input.error {
+  border: 2px solid red;
+}
+
+.custom-inputs input.error:focus {
+  outline-color: red;
+}
+
+
 .custom-inputs button {
   margin-left: 10px;
   background-color: var(--blue);

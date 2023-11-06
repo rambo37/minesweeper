@@ -14,6 +14,9 @@ export function DifficultySelector({
   const [customRows, setCustomRows] = useState(CUSTOM.rows);
   const [customCols, setCustomCols] = useState(CUSTOM.cols);
   const [customMines, setCustomMines] = useState(CUSTOM.mines);
+  const [rowsInputClass, setRowsInputClass] = useState("");
+  const [colsInputClass, setColsInputClass] = useState("");
+  const [minesInputClass, setMinesInputClass] = useState("");
   const [error, setError] = useState(null);
 
   function handleSubmit() {
@@ -24,21 +27,34 @@ export function DifficultySelector({
   // Checks the game parameters are valid. Displays an error and returns false if
   // they are not, else removes any errors that may be present and returns true.
   function validateParameters() {
-    if (customRows < 1 || customCols < 1 || customMines < 1) {
+    setRowsInputClass("");
+    setColsInputClass("");
+    setMinesInputClass("");
+    let invalidRows = customRows < 1;
+    let invalidCols = customCols < 1;
+    let invalidMines = customMines < 1;
+
+    if (invalidRows || invalidCols || invalidMines) {
       setError(
         "The number of rows, columns, and mines must all be at least 1."
       );
+      if (invalidRows) setRowsInputClass("error");
+      if (invalidCols) setColsInputClass("error");
+      if (invalidMines) setMinesInputClass("error");
       return false;
     }
 
-    if (
-      !Number.isInteger(customRows) ||
-      !Number.isInteger(customCols) ||
-      !Number.isInteger(customMines)
-    ) {
+    invalidRows = !Number.isInteger(customRows);
+    invalidCols = !Number.isInteger(customCols);
+    invalidMines = !Number.isInteger(customMines);
+
+    if (invalidRows || invalidCols || invalidMines) {
       setError(
         "The number of rows, columns, and mines must all be whole numbers."
       );
+      if (invalidRows) setRowsInputClass("error");
+      if (invalidCols) setColsInputClass("error");
+      if (invalidMines) setMinesInputClass("error");
       return false;
     }
 
@@ -49,6 +65,8 @@ export function DifficultySelector({
         "The grid is too large. Please lower the number of rows and/or " +
           "columns to no more than 40x40 (no more than 1600 squares in total)."
       );
+      setRowsInputClass("error");
+      setColsInputClass("error");
       return false;
     }
 
@@ -58,6 +76,7 @@ export function DifficultySelector({
           customMines - (size - 1)
         } more mine${customMines === size ? "" : "s"} than allowed.`
       );
+      setMinesInputClass("error");
       return false;
     }
 
@@ -102,6 +121,7 @@ export function DifficultySelector({
         <input
           type="number"
           id="rows"
+          className={rowsInputClass}
           value={customRows}
           min={1}
           onChange={(e) => setCustomRows(Number(e.target.value))}
@@ -110,6 +130,7 @@ export function DifficultySelector({
         <input
           type="number"
           id="cols"
+          className={colsInputClass}
           value={customCols}
           min={1}
           onChange={(e) => setCustomCols(Number(e.target.value))}
@@ -118,6 +139,7 @@ export function DifficultySelector({
         <input
           type="number"
           id="mines"
+          className={minesInputClass}
           value={customMines}
           min={1}
           onChange={(e) => setCustomMines(Number(e.target.value))}
