@@ -3,6 +3,7 @@ import { useState } from "react";
 
 export function DifficultySelector({
   selectedMode,
+  setSelectedMode,
   easyMode,
   mediumMode,
   expertMode,
@@ -20,6 +21,7 @@ export function DifficultySelector({
   const [error, setError] = useState(null);
 
   function handleSubmit() {
+    setSelectedMode(CUSTOM);
     if (!validateParameters()) return;
     customMode(customRows, customCols, customMines);
   }
@@ -109,7 +111,7 @@ export function DifficultySelector({
         </button>
         <button
           className={`custom-mode ${selectedMode === CUSTOM ? "active" : ""}`}
-          onClick={() => customMode(customRows, customCols, customMines)}
+          onClick={() => handleSubmit()}
         >
           Custom<span>?</span>
         </button>

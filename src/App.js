@@ -293,6 +293,7 @@ export default function App() {
           />
           <DifficultySelector
             selectedMode={selectedMode}
+            setSelectedMode={setSelectedMode}
             easyMode={easyMode}
             mediumMode={mediumMode}
             expertMode={expertMode}
