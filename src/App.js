@@ -47,7 +47,9 @@ export default function App() {
   };
 
   function handleLeftClick(index) {
-    if (gameWon || gameLost || flaggedSquares[index]) return;
+    if (gameWon || gameLost || flaggedSquares[index] || openedSquares[index]) {
+      return;
+    }
 
     if (paused) setPaused(false);
 
