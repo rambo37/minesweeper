@@ -287,10 +287,7 @@ export default function App() {
         />
         <div>
           <GameControls
-            rows={rows}
-            cols={cols}
-            numberOfMines={numberOfMines}
-            reset={reset}
+            reset={() => reset(rows, cols, numberOfMines)}
             replay={replay}
           />
           <DifficultySelector
