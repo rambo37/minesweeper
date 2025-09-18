@@ -1,4 +1,4 @@
-import { Timer } from "./Timer";
+import { Timer } from "./Timer.jsx";
 
 export function Status({ statusClass, status, seconds, setSeconds, paused }) {
   return (

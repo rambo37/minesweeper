@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Square } from "./Square";
+import { Square } from "./Square.jsx";
 
 export function Board({
   cols,
